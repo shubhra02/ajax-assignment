@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+  </head>
+  <script
+  src="https://code.jquery.com/jquery-3.1.1.min.js"  crossorigin="anonymous"></script>
+  <body>
+    <div id="container"></div>
+    <form id=formToSerialize>
+      <input name="FName" type=text/>
+      <input name="LName" type=text/>
+    </form>
+    <button id="serialize">serialize it</button>
+    <script>
+      $("#serialize").on("click",function(){
+        console.log($("#formToSerialize").serialize());
+        var obj = new Object();
+        var queryParameters = $("#formToSerialize").serialize()
+        obj.fName = "First"
+        obj.lName = "Last"
+        console.log($.param(obj))
+        $.ajax({
+          //url:"http://demo3061204.mockable.io/get-user-data",
+          //url:"http://localhost:3000/sample-object",
+          url:"http://localhost:3000/parameter/user/?"+queryParameters,
+          success: function(data){
+            console.log(data)
+          }
+        })
+      })
+    </script>
+  </body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" media="screen" title="no title">
+  </head>
+  <script  src="https://code.jquery.com/jquery-3.1.1.min.js"  crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <body>
+    <div class="container text-center" id="container" style="background-color:lightblue;">
+      <form class="form-group" id="formToSerialize">
+        <label for="username">Enter Username : </label>
+        <input class="form-control input-lg" id="username" name="username" type=text/>
+      </form>
+      <div>
+        <button class="btn btn-primary" id="get-data">
+        <span class="glyphicon glyphicon-search"></span>Search User's Data
+        </button>
+      </div>
+
+      <div class="row">
+        <img class="col-xs-10 col-sm-8 col-md-5 img-responsive img-circle" id="user-image" src="">
+        <div class="col-xs-10 col-sm-8 col-md-7">
+          <h3 id="user-name"></h3>
+        </div>
+        <div class="col-xs-10 col-sm-8 col-md-7">
+          <p id="user-id"></p>
+        </div>
+        <div class="col-xs-10 col-sm-8 col-md-7">
+          <p id="user-company"></p>
+        </div>
+        <div class="col-xs-10 col-sm-8 col-md-7">
+          <p id="user-email"></p>
+        </div>
+        <div class="col-xs-10 col-sm-8 col-md-7">
+          <p id="created-at"></p>
+        </div>
+        <div class="col-xs-10 col-sm-8 col-md-7">
+          <p id="location"></p>
+        </div>
+        <div  class="col-xs-10 col-sm-8 col-md-7">
+          <p id="url"></p>
+     </div>
+   </div>
+    <script>
+      $(document).ajaxStart(function(){
+        $("#user-image").attr("src","progress.gif");
+      }).ajaxStop(function(){
+        console.log("Ajax Stopped.")
+      }).ajaxSuccess(function(){
+        console.log("Ajax Success")
+      }).ajaxComplete(function(){
+        console.log("Ajax Completed")
+      })
+
+      $("#get-data").on("click",function(){
+        var username = $("#username").val();
+        console.log(username);
+        $.ajax({
+          url:"https://api.github.com/users/"+username,
+          success: function(data){
+            console.log(data)
+            $("#user-image").attr("src",data.avatar_url);
+            $("#user-name").text("User name is : "+data.name);
+            $("#user-id").text("User id is : "+data.id);
+            $("#user-company").text("User's company is : "+data.company);
+            $("#user-email").text("User's email is : "+data.email);
+            $("#created-at").text("ID created at : "+data.created_at);
+            $("#location").text("User's location is : "+data.location);
+            $("#url").text("URL  is : "+data.url);
+          },
+          error: function(){
+            $("#user-image").attr("src","person-solid.png");
+            $("#user-name").text("User not found");
+          }
+        })
+      })
+    </script>
+  </body>
+</html>
